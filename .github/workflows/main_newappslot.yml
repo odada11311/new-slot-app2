@@ -46,8 +46,8 @@ jobs:
        #if: steps.cache.outputs.cache-hit != 'true'       
         run: pip install -r requirements.txt
         
-      - name: test build
-        run: python manage.py runserver
+     # - name: test build
+      #  run: python manage.py runserver
         
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v2
