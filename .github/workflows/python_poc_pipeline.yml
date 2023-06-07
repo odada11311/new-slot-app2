@@ -1,4 +1,4 @@
-name: Build and deploy Python app to Azure Web App - newAppSlot
+name: Build and deploy Python app to Azure Web App
 
 on:
   push:
