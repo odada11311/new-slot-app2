@@ -127,7 +127,7 @@ jobs:
 
         - name: Traffic test slots
           id: trafic-test
-          run: az webapp traffic-routing set --distribution ${{ env.SLOT_NAME_B }}=30 --name ${{ env.WEBAPP_NAME } -g ${{ env.RESOURCE_GROUP }}
+          run: az webapp traffic-routing set --distribution ${{ env.SLOT_NAME_B }}=30 --name ${{ env.WEBAPP_NAME }} -g ${{ env.RESOURCE_GROUP }}
 
         - name: ITSM Integration
           env:
