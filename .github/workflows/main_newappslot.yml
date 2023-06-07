@@ -1,4 +1,3 @@
-
 name: Build and deploy Python app to Azure Web App - newAppSlot
 
 on:
@@ -12,6 +11,7 @@ env:
   WEBAPP_NAME: newAppSlot
   SLOT_NAME_B: newappslot # Create a slot on your web app called "staging"
   DOTNET_VERSION: "6.0.x"
+  SLOT_NAME_A: final-slot
 
 jobs:
   build:
@@ -30,21 +30,19 @@ jobs:
           python -m venv venv
           source venv/bin/activate
 
-      #- name: Cache dependencies 
-       # uses: actions/cache@v2
-        #id: cache
-        #with:
-         # path: ~/.cache/pip
-         # key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        #  restore_keys: |
-        #    ${{ runner.os }}-pip-
+      #- name: Cache dependencies
+      # uses: actions/cache@v2
+      #id: cache
+      #with:
+      # path: ~/.cache/pip
+      # key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+      #  restore_keys: |
+      #    ${{ runner.os }}-pip-
 
-      - name: install dependencies if cache was not found 
-       #if: steps.cache.outputs.cache-hit != 'true'       
+      - name: install dependencies if cache was not found
+        #if: steps.cache.outputs.cache-hit != 'true'
         run: pip install -r requirements.txt
-        
 
-        
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v2
         with:
@@ -56,13 +54,16 @@ jobs:
   deploy-to-stage-initial-slot:
     runs-on: ubuntu-latest
     needs: build
+    environment:
+      name: stage
+      url: "https://${{ env.WEBAPP_NAME }}.azurewebsites.net/"
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
           name: python-app
           path: .
-          
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
@@ -70,7 +71,7 @@ jobs:
           app-name: ${{ env.WEBAPP_NAME }}
           #slot-name: ${{ env.SLOT_NAME_B }}
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-          
+
   swap-stage-slot:
     name: Release to stage
     needs: deploy-to-stage-initial-slot
@@ -88,11 +89,9 @@ jobs:
         id: main-swap
         run: az webapp deployment slot swap -s ${{ env.SLOT_NAME_B }} -n ${{ env.WEBAPP_NAME }} -g ${{ env.RESOURCE_GROUP }} --target-slot ${{ env.SLOT_NAME_A }}
 
-
-
   deploy-to-prod-initial-slot:
     runs-on: ubuntu-latest
-    needs: deploy-to-stage-initial-slot
+    needs: swap-stage-slot
     environment:
       name: "production"
       url: "https://${{ env.WEBAPP_NAME }}.azurewebsites.net/"
@@ -103,7 +102,7 @@ jobs:
         with:
           name: python-app
           path: .
-          
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
@@ -113,37 +112,37 @@ jobs:
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
 
   test-and-deploy-to-prod-slot:
-      name: Testing prod artifact
-      needs: deploy-to-prod-initial-slot
-      runs-on: ubuntu-latest
-      environment:
-        name: "Production"
-        url: "https://${{ env.WEBAPP_NAME }}.azurewebsites.net/"
-      steps:
-        - name: Log into Azure CLI with service principal
-          uses: azure/login@v1.1
-          with:
-            creds: ${{ secrets.AZURE_CREDENTIALS }}
+    name: Testing prod artifact
+    needs: deploy-to-prod-initial-slot
+    runs-on: ubuntu-latest
+    environment:
+      name: "Production"
+      url: "https://${{ env.WEBAPP_NAME }}.azurewebsites.net/"
+    steps:
+      - name: Log into Azure CLI with service principal
+        uses: azure/login@v1.1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-        - name: Traffic test slots
-          id: trafic-test
-          run: az webapp traffic-routing set --distribution ${{ env.SLOT_NAME_B }}=30 --name ${{ env.WEBAPP_NAME }} -g ${{ env.RESOURCE_GROUP }}
+      - name: Traffic test slots
+        id: trafic-test
+        run: az webapp traffic-routing set --distribution ${{ env.SLOT_NAME_B }}=30 --name ${{ env.WEBAPP_NAME }} -g ${{ env.RESOURCE_GROUP }}
 
-        - name: ITSM Integration
-          env:
-            ITSM_API_TOKEN: ${{ secrets.ITSM_API_TOKEN }}
-          run: |
-            # Your custom integration script
-            # Example: create a ticket or update a ticket in the ITSM system
-           # echo "Creating ticket in ITSM system"
-           # curl -X POST -H "Authorization: Bearer $ITSM_API_TOKEN" -d '{"title": "Pipeline Deployment", "status": "In Progress"}' https://itsm-api.example.com/tickets
+      - name: ITSM Integration
+        env:
+          ITSM_API_TOKEN: ${{ secrets.ITSM_API_TOKEN }}
+        run: |
+          # Your custom integration script
+          # Example: create a ticket or update a ticket in the ITSM system
+        # echo "Creating ticket in ITSM system"
+        # curl -X POST -H "Authorization: Bearer $ITSM_API_TOKEN" -d '{"title": "Pipeline Deployment", "status": "In Progress"}' https://itsm-api.example.com/tickets
 
-        - name: Approve Deployment
-          id: approval
-          uses: repo/approval-action@v1
-          with:
-            message: "Test sucessful with no erro or incident ticket raised"
-          
-        - name: Swap slots
-          id: main-swap
-          run: az webapp deployment slot swap -s ${{ env.SLOT_NAME_B }} -n ${{ env.WEBAPP_NAME }} -g ${{ env.RESOURCE_GROUP }} --target-slot ${{ env.SLOT_NAME_A }}
+      - name: Approve Deployment
+        id: approval
+        uses: repo/approval-action@v1
+        with:
+          message: "Test sucessful with no erro or incident ticket raised"
+
+      - name: Swap slots
+        id: main-swap
+        run: az webapp deployment slot swap -s ${{ env.SLOT_NAME_B }} -n ${{ env.WEBAPP_NAME }} -g ${{ env.RESOURCE_GROUP }} --target-slot ${{ env.SLOT_NAME_A }}
