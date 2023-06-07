@@ -73,7 +73,6 @@ jobs:
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
 
   swap-stage-slot:
-    name: Release to stage
     needs: deploy-to-stage-initial-slot
     runs-on: ubuntu-latest
     environment:
@@ -112,7 +111,6 @@ jobs:
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
 
   test-and-deploy-to-prod-slot:
-    name: Testing prod artifact
     needs: deploy-to-prod-initial-slot
     runs-on: ubuntu-latest
     environment:
