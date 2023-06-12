@@ -82,7 +82,7 @@ jobs:
 
       - name: Swap slots
         id: main-swap
-        run: az webapp deployment slot swap -s ${{ env.SLOT_NAME_B }} -n ${{ env.WEBAPP_NAME }} -g ${{ env.RESOURCE_GROUP }} --target-slot ${{ env.SLOT_NAME_A }}
+        run: az webapp deployment slot swap --slot ${{ env.SLOT_NAME_B }} -n ${{ env.WEBAPP_NAME }} -g ${{ env.RESOURCE_GROUP }} --target-slot ${{ env.SLOT_NAME_A }}
 
   deploy-to-prod-initial-slot:
     runs-on: ubuntu-latest
@@ -139,4 +139,4 @@ jobs:
 
       - name: Swap slots
         id: main-swap
-        run: az webapp deployment slot swap -s ${{ env.SLOT_NAME_B }} -n ${{ env.WEBAPP_NAME }} -g ${{ env.RESOURCE_GROUP }} --target-slot ${{ env.SLOT_NAME_A }}
+        run: az webapp deployment slot swap --slot ${{ env.SLOT_NAME_B }} -n ${{ env.WEBAPP_NAME }} -g ${{ env.RESOURCE_GROUP }} --target-slot ${{ env.SLOT_NAME_A }}
