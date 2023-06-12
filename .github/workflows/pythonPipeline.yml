@@ -82,7 +82,7 @@ jobs:
 
       - name: Swap slots
         id: main-swap
-        run: az webapp deployment slot swap --resource-group ${{ vars.RESOURCE_GROUP }} --name ${{ vars.WEBAPP_NAME }} --slot ${{ vars.SLOT_NAME_B }} --target-slot ${{ env.SLOT_NAME_A }}
+        run: az webapp deployment slot swap --resource-group ${{ vars.RESOURCE_GROUP }} --name ${{ vars.WEBAPP_NAME }} --slot ${{ vars.SLOT_NAME_B }} --target-slot ${{ vars.SLOT_NAME_A }}
   
   deploy-to-prod-initial-slot:
     runs-on: ubuntu-latest
@@ -111,7 +111,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: "Production"
-      url: "https://${{ env.WEBAPP_NAME }}.azurewebsites.net/"
+      url: "https://${{ vars.WEBAPP_NAME }}.azurewebsites.net/"
     steps:
       - name: Log into Azure CLI with service principal
         uses: azure/login@v1.1
@@ -120,7 +120,7 @@ jobs:
 
       - name: Traffic test slots
         id: trafic-test
-        run: az webapp traffic-routing set --distribution ${{ env.SLOT_NAME_B }}=30 --name ${{ env.WEBAPP_NAME }} -g ${{ env.RESOURCE_GROUP }}
+        run: az webapp traffic-routing set --distribution ${{ vars.SLOT_NAME_B }}=30 --name ${{ vars.WEBAPP_NAME }} -g ${{ vars.RESOURCE_GROUP }}
 
       - name: ITSM Integration
         env:
@@ -139,4 +139,4 @@ jobs:
 
       - name: Swap slots
         id: main-swap
-        run: az webapp deployment slot swap --resource-group ${{ env.RESOURCE_GROUP }} --name ${{ env.WEBAPP_NAME }} --slot ${{ env.SLOT_NAME_B }} --target-slot ${{ env.SLOT_NAME_A }}
+        run: az webapp deployment slot swap --resource-group ${{ vars.RESOURCE_GROUP }} --name ${{ vars.WEBAPP_NAME }} --slot ${{ vars.SLOT_NAME_B }} --target-slot ${{ vars.SLOT_NAME_A }}
