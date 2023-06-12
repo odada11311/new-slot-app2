@@ -65,7 +65,7 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: ${{ vars.WEBAPP_NAME }}
-          slot-name: ${{ vars.SLOT_NAME_B }}
+          #slot-name: ${{ vars.SLOT_NAME_B }}
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
 
   swap-stage-slot:
@@ -103,7 +103,7 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: ${{ vars.WEBAPP_NAME }}
-          slot-name: ${{ vars.SLOT_NAME_B }}
+          #slot-name: ${{ vars.SLOT_NAME_B }}
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
 
   test-and-deploy-to-prod-slot:
