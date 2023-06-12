@@ -52,7 +52,7 @@ jobs:
     needs: build
     environment:
       name: stage
-      url: "https://${{ env.WEBAPP_NAME }}.azurewebsites.net/"
+      url: "https://${{ env.SLOT_NAME_B }}.azurewebsites.net/"
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
@@ -82,8 +82,8 @@ jobs:
 
       - name: Swap slots
         id: main-swap
-        run: az webapp deployment slot swap --slot ${{ env.SLOT_NAME_B }} -n ${{ env.WEBAPP_NAME }} -g ${{ env.RESOURCE_GROUP }} --target-slot ${{ env.SLOT_NAME_A }}
-
+        run: az webapp deployment slot swap --resource-group ${{ env.RESOURCE_GROUP }} --name ${{ env.WEBAPP_NAME }} --slot ${{ env.SLOT_NAME_B }} --target-slot ${{ env.SLOT_NAME_A }}
+  
   deploy-to-prod-initial-slot:
     runs-on: ubuntu-latest
     needs: swap-stage-slot
@@ -139,4 +139,4 @@ jobs:
 
       - name: Swap slots
         id: main-swap
-        run: az webapp deployment slot swap --slot ${{ env.SLOT_NAME_B }} -n ${{ env.WEBAPP_NAME }} -g ${{ env.RESOURCE_GROUP }} --target-slot ${{ env.SLOT_NAME_A }}
+        run: az webapp deployment slot swap --resource-group ${{ env.RESOURCE_GROUP }} --name ${{ env.WEBAPP_NAME }} --slot ${{ env.SLOT_NAME_B }} --target-slot ${{ env.SLOT_NAME_A }}
