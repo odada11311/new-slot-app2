@@ -106,7 +106,7 @@ jobs:
           #slot-name: ${{ vars.SLOT_NAME_B }}
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
 
-  test-and-deploy-to-prod-slot:
+  test-with-prod-workload:
     needs: deploy-to-prod-initial-slot
     runs-on: ubuntu-latest
     environment:
@@ -131,12 +131,13 @@ jobs:
         # echo "Creating ticket in ITSM system"
         # curl -X POST -H "Authorization: Bearer $ITSM_API_TOKEN" -d '{"title": "Pipeline Deployment", "status": "In Progress"}' https://itsm-api.example.com/tickets
 
-      - name: Approve Deployment
-        id: approval
-        uses: repo/approval-action@v1
-        with:
-          message: "Test sucessful with no erro or incident ticket raised"
-
+  final-deployment:
+    needs: test-with-prod-workload
+    runs-on: ubuntu-latest
+    environment:
+      name: "Production"
+      url: "https://${{ vars.WEBAPP_NAME }}.azurewebsites.net/"
+    steps:
       - name: Swap slots
         id: main-swap
         run: az webapp deployment slot swap --resource-group ${{ vars.RESOURCE_GROUP }} --name ${{ vars.WEBAPP_NAME }} --slot ${{ vars.SLOT_NAME_B }}
