@@ -7,11 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  RESOURCE_GROUP: replace-with-your-rg-name
-  WEBAPP_NAME: newAppSlot
-  SLOT_NAME_B: newappslot # Create a slot on your web app called "staging"
   DOTNET_VERSION: "6.0.x"
-  SLOT_NAME_A: final-slot
 
 jobs:
   build:
