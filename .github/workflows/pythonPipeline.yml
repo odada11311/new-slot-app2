@@ -64,7 +64,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: ${{ vars.WEBAPP_NAME }}
+          #app-name: ${{ vars.WEBAPP_NAME }}
           #slot-name: ${{ vars.SLOT_NAME_B }}
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
 
@@ -102,7 +102,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: ${{ vars.WEBAPP_NAME }}
+          #app-name: ${{ vars.WEBAPP_NAME }}
           #slot-name: ${{ vars.SLOT_NAME_B }}
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
 
