@@ -5,10 +5,10 @@ on:
     branches:
       - main
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Build"]
-    types:
-      - completed
+  #workflow_run:
+   # workflows: ["Build"]
+    #types:
+     # - completed
 
 jobs:
   build:
@@ -17,25 +17,19 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v3
-        with:
-          name: code-artifact
-          path: .
-
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: 16
 
       - name: Install Dependencies
-        run: yarn install && yarn build
+        run: cd demo.code && yarn install && yarn build
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
         with:
           name: demo-app
-          path: build/
+          path: demo.code/build/
 
 
   deploy-to-stage-initial-slot:
