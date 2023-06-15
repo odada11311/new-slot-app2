@@ -37,11 +37,11 @@ jobs:
         run: |
           ls -R .
           cd demo.infra/
-          pulumi preview --non-interactive --emoji --color always
+          pulumi preview --non-interactive -s dev --emoji --color always
       - name: Deploy changes
         run: |
           cd demo.infra/
-          pulumi up --non-interactive --emoji --color always --yes
+          pulumi up --non-interactive -s dev --emoji --color always --yes
 #     runs-on: ubuntu-latest
 #     steps:
 
