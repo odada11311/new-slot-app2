@@ -17,7 +17,13 @@ jobs:
           node-version: 16.x
       
       - name: Archive infrastructure artifacts for pulumi up
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: infra-artifact
           path: ./demo.infra
+
+      - name: Archive code artifacts for deployment slot display
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-artifact
+          path: ./demo.code
