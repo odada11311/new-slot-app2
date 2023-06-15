@@ -1,0 +1,15 @@
+pulumi: pul-c6930874c8ba8a549e3ae5f8d61a76ae885f0abc
+
+
+{
+  "clientId": "4b71eefe-f16f-451e-b9d8-41570461d2f9",
+  "clientSecret": "c9z8Q~~mMHJdt0ItS2goA1Hyph8qEhIbEylfxaDv",
+  "subscriptionId": "63a59683-b171-4bb8-9093-0461e7938d2c",
+  "tenantId": "994aa875-3756-4925-9066-3f1aabec6f8e",
+  "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+  "resourceManagerEndpointUrl": "https://management.azure.com/",
+  "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+  "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+  "galleryEndpointUrl": "https://gallery.azure.com/",
+  "managementEndpointUrl": "https://management.core.windows.net/"
+}

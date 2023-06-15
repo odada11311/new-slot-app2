@@ -1,0 +1,23 @@
+name: Build
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v3
+        with:
+          clean: false
+          
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      
+      - name: Archive infrastructure artifacts for pulumi up
+        uses: actions/upload-artifact@v2
+        with:
+          name: infra-artifact
+          path: /home/runner/work/demo-app/demo.infra
