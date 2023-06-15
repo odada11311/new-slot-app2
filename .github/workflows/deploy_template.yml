@@ -46,7 +46,7 @@ jobs:
         with:
           work-dir: ./demo.infra
           command: refresh
-          #stack-name: washingtontrustbank/${{ inputs.ENVIRONMENT_NAME }}
+          stack-name: washingtontrustbank/dev
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
@@ -58,7 +58,7 @@ jobs:
         with:
           work-dir: ./demo.infra
           command: up
-          #stack-name: olustack name
+          stack-name: washingtontrustbank/dev
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
