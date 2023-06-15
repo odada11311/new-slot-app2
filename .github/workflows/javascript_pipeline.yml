@@ -29,7 +29,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: demo-app
-          path: demo.code/build/
+          path: demo.code/.next/
 
 
   deploy-to-stage-initial-slot:
