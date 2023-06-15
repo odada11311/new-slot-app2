@@ -1,4 +1,4 @@
-name: Brollback plan
+name: Rollback plan
 
 on:
   workflow_dispatch:
