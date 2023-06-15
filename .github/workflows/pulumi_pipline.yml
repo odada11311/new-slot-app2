@@ -28,8 +28,10 @@ jobs:
         with:
           name: infra-artifact
           path: ./demo.infra
+          
   deploy-stage:
     if: ${{ github.ref == 'refs/heads/main' }}
+    needs: build
     uses: ./.github/workflows/deploy_template.yml
     with:
       RUNNER: "ubuntu-latest"
