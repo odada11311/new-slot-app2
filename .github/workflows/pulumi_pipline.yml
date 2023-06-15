@@ -31,6 +31,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          ls -R .
           cd demo.infra/
           npm install
       - name: Preview changes
