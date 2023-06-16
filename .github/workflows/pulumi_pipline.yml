@@ -27,21 +27,12 @@ jobs:
         run: |
           curl -fsSL https://get.pulumi.com | sh
           export PATH=$PATH:/root/.pulumi/bin
-          export PULUMI_ACCESS_TOKEN=$PULUMI
-
-      - name: Install dependencies
-        run: |
           cd demo.infra/
           npm install
-      - name: Preview changes
-        run: |
-          cd demo.infra/
           export PULUMI_ACCESS_TOKEN=$PULUMI
           pulumi preview --non-interactive -s dev --emoji --color always --debug
-      - name: Deploy changes
-        run: |
-          cd demo.infra/
           pulumi up --non-interactive -s dev --emoji --color always --yes
+ 
 #     runs-on: ubuntu-latest
 #     steps:
 
