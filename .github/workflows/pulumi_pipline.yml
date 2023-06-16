@@ -27,7 +27,7 @@ jobs:
         run: |
           curl -fsSL https://get.pulumi.com | sh
           export PATH=$PATH:/root/.pulumi/bin
-          export PULUMI_ACCESS_TOKEN=pul-c6930874c8ba8a549e3ae5f8d61a76ae885f0abc
+          export PULUMI_ACCESS_TOKEN=$PULUMI
 
       - name: Install dependencies
         run: |
@@ -35,8 +35,8 @@ jobs:
           npm install
       - name: Preview changes
         run: |
-
           cd demo.infra/
+          export PULUMI_ACCESS_TOKEN=$PULUMI
           pulumi preview --non-interactive -s dev --emoji --color always --debug
       - name: Deploy changes
         run: |
