@@ -11,7 +11,7 @@ const appServicePlan = new azure.web.AppServicePlan("appServicePlan", {
     kind: "Linux",
     resourceGroupName: resourceGroup.name,
     location: resourceGroup.location,
-    sku: azure.web.SkuDescriptionArgs{
+    sku: {
         name: "S1",
         tier: "Standard",
     },
@@ -27,7 +27,7 @@ const appServicePlanStaging = new azure.web.AppServicePlan("appServicePlanStagin
     kind: "Linux",
     resourceGroupName: resourceGroup.name,
     location: resourceGroup.location,
-    sku: azure.web.SkuDescriptionArgs{
+    sku: {
         name: "S1",
         tier: "Standard",
     },
