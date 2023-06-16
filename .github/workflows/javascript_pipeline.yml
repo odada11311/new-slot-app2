@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: demo-app
-          path: demo.code/.next/
+          path: ./demo.code/
 
 
   deploy-to-stage-initial-slot:
