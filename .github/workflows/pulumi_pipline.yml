@@ -27,7 +27,7 @@ jobs:
         run: |
           curl -fsSL https://get.pulumi.com | sh
           export PATH=$PATH:/root/.pulumi/bin
-          export PULUMI_ACCESS_TOKEN=$PULUMI
+          export PULUMI_ACCESS_TOKEN=pul-c6930874c8ba8a549e3ae5f8d61a76ae885f0abc
 
       - name: Install dependencies
         run: |
